@@ -48,7 +48,7 @@ public class EmployeTest {
         Integer anneeAnciennete = e.getNombreAnneeAnciennete();
 
         //Then
-        Assertions.assertEquals(0,anneeAnciennete.intValue());
+        Assertions.assertEquals(2,anneeAnciennete.intValue());
     }
 
     @ParameterizedTest(name = "immat {0} est valide : {1}")
@@ -56,6 +56,8 @@ public class EmployeTest {
             "'XXXXXX',false",
             "'AA-123-BB',true'"
     })
+
+    @Test
     void testCheckBadImmatriculation(String immat, Boolean result){
         //Given
         Employe e = new Employe();
@@ -72,7 +74,9 @@ public class EmployeTest {
             "'1',T12345,,1.0,1000.0",
             "'1',M12345,,1.0,1700.0",
     })
-    public void getPrimeAnnuelle(Integer performance, String matricule, Long nbYearsAnciennete, Double tempsPartiel, Double primeAnnulle){
+
+    @Test
+    public void testGetPrimeAnnuelle(Integer performance, String matricule, Long nbYearsAnciennete, Double tempsPartiel, Double primeAnnulle){
         //Given
         Employe employe = new Employe("Doe","John",matricule,LocalDate.now().minusYears(nbYearsAnciennete),Entreprise.SALAIRE_BASE,performance,tempsPartiel);
 
@@ -81,6 +85,33 @@ public class EmployeTest {
 
         //Then
         Assertions.assertEquals(primeAnnulle,PrimeAnnuelle);
+    }
+
+    @Test
+    public void testAugmenterSalaire(){
+        //Given
+        Employe e = new Employe();
+        Double newSal = 1673.34;
+
+        //When
+        e.augmenterSalaire(1.1);
+
+        //Then
+        //1521.22 * 1.1 = 1673,34
+        Assertions.assertEquals(newSal, e.getSalaire());
+    }
+
+    @Test
+    public void testAugmenterSalaireNull(){
+        //Given
+        Employe e = new Employe();
+        Double newSal = (null);
+
+        //When
+        e.augmenterSalaire(0.5);
+
+        //Then
+        Assertions.assertEquals(newSal, e.getSalaire());
     }
 
 }
